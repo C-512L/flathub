@@ -1,0 +1,67 @@
+id: io.github.hneemann.Digital
+runtime: org.freedesktop.Platform
+runtime-version: "24.08"
+sdk: org.freedesktop.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.openjdk21
+  - org.freedesktop.Sdk.Extension.gnat15
+  - org.freedesktop.Sdk.Extension.llvm20
+command: /app/bin/digital
+finish-args:
+  - --share=ipc
+  - --socket=x11
+  - --filesystem=xdg-documents
+  - --filesystem=xdg-download
+  - --filesystem=xdg-desktop
+cleanup:
+  - /include
+  - /lib/pkgconfig
+  - /share/aclocal
+  - /share/man
+  - '*.la'
+build-options:
+  no-debuginfo: true
+modules:
+  - name: openjdk
+    buildsystem: simple
+    build-commands:
+      - /usr/lib/sdk/openjdk21/install.sh
+  - name: iverilog
+    buildsystem: autotools
+    sources:
+      - type: archive
+        url: https://github.com/steveicarus/iverilog/archive/refs/tags/v12_0.tar.gz
+        sha512: a8e112f760903335ef2fbf00529e5fe282b83c1f583c4316373b9410d7fad2a53d5c4adb82dd62491c14a620cb5b1fab117cb0cde638c86b65fe5b7b0dd07152
+      - type: shell
+        commands:
+          - chmod +x autoconf.sh
+          - ln autoconf.sh autogen.sh
+  - name: ghdl
+    buildsystem: autotools
+    build-options:
+      config-opts:
+        - --with-llvm-config
+      append-path: "/usr/lib/sdk/llvm20/bin:/usr/lib/sdk/gnat15/bin"
+    sources:
+      - type: git
+        url: https://github.com/ghdl/ghdl.git
+        tag: v5.1.1
+  - name: digital
+    buildsystem: simple
+    build-commands:
+      - install -Dm755 digital.sh /app/bin/digital
+      - install -Dm755 Digital.jar /app/share/Digital/Digital.jar
+      - install -Dm644 ${FLATPAK_ID}.metainfo.xml /app/share/metainfo/${FLATPAK_ID}.metainfo.xml
+      - install -Dm755 linux/desktop.template /app/share/applications/${FLATPAK_ID}.desktop
+      - desktop-file-edit --set-key=Icon --set-value=${FLATPAK_ID} --set-key=Exec --set-value=digital /app/share/applications/${FLATPAK_ID}.desktop
+      - install -Dm644 icon.svg /app/share/icons/hicolor/scalable/apps/${FLATPAK_ID}.svg
+      - mv docu /app/share/Digital/docu
+      - mv lib /app/share/Digital/lib
+    sources:
+      - type: archive
+        url: https://github.com/hneemann/Digital/releases/download/v0.31/Digital.zip
+        sha512: e3998e92e47d71caaf34b05be51bb623353806ea58c5018046665903771f88839bb5c2c6ada4ace11ec99ffa091328b414941e070aee343a590a3e566620af50
+      - type: file
+        path: io.github.hneemann.Digital.metainfo.xml
+      - type: file
+        path: digital.sh
