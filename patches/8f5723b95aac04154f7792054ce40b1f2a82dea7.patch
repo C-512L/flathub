@@ -1,0 +1,34 @@
+From 8f5723b95aac04154f7792054ce40b1f2a82dea7 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Roberto=20Abdelkader=20Mart=C3=ADnez=20P=C3=A9rez?=
+ <robertomartinezp@gmail.com>
+Date: Fri, 31 Jan 2025 01:54:23 +0100
+Subject: [PATCH] Compatiblidad Linux ARM64 (aarch64-linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+- Se añade a la comprobación la arquitectura ARM64 para permitir la
+  carga del NSS en Linux aarch64.
+---
+ .../es/gob/afirma/keystores/mozilla/bintutil/ElfParser.java   | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/afirma-keystores-mozilla/src/main/java/es/gob/afirma/keystores/mozilla/bintutil/ElfParser.java b/afirma-keystores-mozilla/src/main/java/es/gob/afirma/keystores/mozilla/bintutil/ElfParser.java
+index ae1f04d97..897b662d9 100644
+--- a/afirma-keystores-mozilla/src/main/java/es/gob/afirma/keystores/mozilla/bintutil/ElfParser.java
++++ b/afirma-keystores-mozilla/src/main/java/es/gob/afirma/keystores/mozilla/bintutil/ElfParser.java
+@@ -139,8 +139,10 @@ public final class ElfParser {
+ 			return false;
+ 		}
+ 		return "64".equals(Platform.getJavaArch()) && //$NON-NLS-1$
+-					Platform.MACHINE.AMD64.equals(Platform.getMachineType()) &&
++					(Platform.MACHINE.AMD64.equals(Platform.getMachineType()) &&
+ 						ElfMachineType.AMD64.equals(a) ||
++					Platform.MACHINE.ARM64.equals(Platform.getMachineType()) &&
++						ElfMachineType.ARM64.equals(a)) ||
+ 			   "32".equals(Platform.getJavaArch()) && //$NON-NLS-1$
+ 			   		(Platform.MACHINE.X86.equals(Platform.getMachineType()) || Platform.MACHINE.AMD64.equals(Platform.getMachineType())) && // 32 puede estar en maquina de 32 o de 64 bits
+ 		   				ElfMachineType.X86.equals(a);
+-- 
+2.53.0
+

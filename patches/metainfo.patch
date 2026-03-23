@@ -1,0 +1,121 @@
+diff --git a/afirma-simple-installer/linux/instalador_deb/src/usr/share/metainfo/es.gob.afirma.metainfo.xml b/afirma-simple-installer/linux/common/usr/share/metainfo/metainfo.xml.in
+index de51cbbe4..f351b6bdb 100755
+--- a/afirma-simple-installer/linux/instalador_deb/src/usr/share/metainfo/es.gob.afirma.metainfo.xml
++++ b/afirma-simple-installer/linux/common/usr/share/metainfo/metainfo.xml.in
+@@ -1,27 +1,106 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <component>
+-  <id>es.gob.afirma</id>
++  <id>@APP_ID@</id>
+   <name>Autofirma</name>
+-  <summary>Aplicación de firma electrónica.</summary>
+-  <description>Autofirma proporciona una interfaz gráfica para la firma electrónica de documentos y puede ser ejecutada desde el navegador para la firma de procedimientos administrativos web de Administración Electrónica.</description>
++  <summary>Aplicación de firma electrónica</summary>
++  <description>
++    <p>AutoFirma provides a graphical interface for the electronic signature of documents. It can be
++      launched from a web browser to sign administrative procedures on E-Government websites.</p>
++    <p xml:lang="es">Autofirma proporciona una interfaz gráfica para la firma electrónica de
++      documentos y puede ser ejecutada desde el navegador para la firma de procedimientos
++      administrativos web de Administración Electrónica.</p>
++    </description>
+   <url type="homepage">https://firmaelectronica.gob.es/Home/Descargas.html</url>
+-  <project_license>EUPL-1.1 OR GPL-2.0-only</project_license>
+-  <icon type="local" width="128" height="128">/usr/share/Autofirma/Autofirma.svg</icon>
++  <url type="vcs-browser">https://github.com/ctt-gob-es/clienteafirma</url>
++  <project_license>EUPL-1.1 AND GPL-2.0-only</project_license>
++  <metadata_license>CC0-1.0</metadata_license>
++  <icon type="stock">@APP_ID@</icon>
+   <provides>
+-    <binary>autofirma</binary>
++    <id>@APP_ID@.desktop</id>
+   </provides>
++  <developer id="es.gob.ctt">
++    <name>Spanish Government</name>
++    <name xml:lang="es">Gobierno de España</name>
++  </developer>
+   <releases>
+     <release version="1.9" date="2025-01-27" />
+   </releases>
++  <branding>
++    <color type="primary" scheme_preference="light">#ffffff</color>
++    <color type="primary" scheme_preference="dark">#deddda</color>
++  </branding>
++  <screenshots>
++    <screenshot type="default">
++      <image>
++        https://raw.githubusercontent.com/ctt-gob-es/clienteafirma/refs/heads/master/media/installer/fedora-snapshot-01.png</image>
++      <caption>Main window when launching the app</caption>
++      <caption xml:lang="es">Ventana principal al iniciar la aplicación</caption>
++    </screenshot>
++    <screenshot>
++      <image>
++        https://github.com/ctt-gob-es/clienteafirma/raw/refs/heads/master/afirma-simple/src/main/resources/help/Spanish.lproj/gfx/menualmacenesclaves_mini.png</image>
++      <caption>Settings of the main aplication</caption>
++      <caption xml:lang="es">Preferencias de configuración de firma electrónica</caption>
++    </screenshot>
++    <screenshot>
++      <image>
++        https://github.com/ctt-gob-es/clienteafirma/raw/refs/heads/master/afirma-simple/src/main/resources/help/Spanish.lproj/gfx/dialogocertificadoscargados.png
++      </image>
++      <caption>Trusted certificates window</caption>
++      <caption xml:lang="es">Ventana de Certificados de Confianza</caption>
++    </screenshot>
++    <screenshot>
++      <image>
++        https://github.com/ctt-gob-es/clienteafirma/raw/refs/heads/master/afirma-simple/src/main/resources/help/Spanish.lproj/gfx/menugproxy_mini.png
++      </image>
++      <caption>Proxy settings window</caption>
++      <caption xml:lang="es">Ventana de ajustes de proxy</caption>
++    </screenshot>
++    <screenshot>
++      <image>
++        https://github.com/ctt-gob-es/clienteafirma/raw/refs/heads/master/media/wiki/resources/help/desktop-panelpdf-1-es-ES.png
++      </image>
++      <caption>Signature settings window</caption>
++      <caption xml:lang="es">Ventana de configuración de firma</caption>
++    </screenshot>
++    <screenshot>
++      <image>
++        https://github.com/ctt-gob-es/clienteafirma/raw/refs/heads/master/afirma-simple/src/main/resources/help/Spanish.lproj/gfx/menuplugins_mini.png
++      </image>
++      <caption>Plugins window</caption>
++      <caption xml:lang="es">Ventana de plugins</caption>
++    </screenshot>
++  </screenshots>
++  <content_rating type="oars-1.1" />
+   <categories>
+     <category>Office</category>
+-    <category>Utilities</category>
+-    <category>Signature</category>
++    <category>Utility</category>
+     <category>Java</category>
+   </categories>
+-  <launchable type="desktop-id">afirma.desktop</launchable>
++  <keywords>
++    <keyword>signature</keyword>
++    <keyword xml:lang="es">firma</keyword>
++    <keyword>digital</keyword>
++    <keyword>security</keyword>
++    <keyword xml:lang="es">seguridad</keyword>
++    <keyword>certificate</keyword>
++    <keyword xml:lang="es">certificado</keyword>
++    <keyword>DNIe</keyword>
++    <keyword>eID</keyword>
++    <keyword>electronic</keyword>
++    <keyword>identification</keyword>
++    <keyword>document</keyword>
++    <keyword xml:lang="es">documento</keyword>
++    <keyword xml:lang="es">identificación</keyword>
++    <keyword xml:lang="es">electrónica</keyword>
++    <keyword>authentication</keyword>
++  </keywords>
++  <launchable type="desktop-id">@APP_ID@.desktop</launchable>
++  <recommends>
++    <control>keyboard</control>
++    <control>pointing</control>
++  </recommends>
+   <requires>
+     <id>libnss3-tools</id>
+   </requires>
+ </component>
+-

@@ -3,93 +3,92 @@ runtime: org.freedesktop.Platform
 runtime-version: "25.08"
 sdk: org.freedesktop.Sdk
 sdk-extensions:
-  - org.freedesktop.Sdk.Extension.openjdk17
+  - org.freedesktop.Sdk.Extension.openjdk25
 command: autofirma
-
 finish-args:
-  - --filesystem=host
+  - --filesystem=xdg-download
+  - --filesystem=xdg-documents
+  # Autofirma only checks legacy NSS db location for now.
+  # TODO: Support XDG Base Directory for NSS db
+  - --filesystem=~/.pki/nssdb
+  # TODO: Implement XDG Base Directory support
+  - --persist=.afirma
+  - --persist=.java
   - --socket=x11
   - --share=ipc
   - --share=network
-  - --socket=pcsc  # smart card support
-
+  - --socket=pcsc
   - --env=PATH=/usr/bin:/app/bin:/app/jre/bin
-
+  - --env=INSTALL_PREFIX=/app
+  - --env=AUTOFIRMA_AVOID_UPDATE_CHECK=true
+cleanup:
+  - /bin/pcsc-spy
+  - /include
+  - /lib/pkgconfig
+  - /share/doc
+  - /share/man
+  - '*.la'
+  - '*.a'
 modules:
+  - name: libpcsclite
+    buildsystem: meson
+    config-opts:
+      - -Dlibsystemd=false
+      - -Dpolkit=false
+      - -Dlibudev=false
+      - -Dusb=false
+      - -Dserial=false
+    post-install:
+      - rm /app/sbin/pcscd
+      - rmdir /app/sbin || true
+    cleanup:
+      - /lib/libpcscspy.so
+      - /lib/libpcscspy.so.0
+    sources:
+      - type: git
+        url: "https://github.com/LudovicRousseau/PCSC.git"
+        tag: '2.4.1'
   - name: openjdk
     buildsystem: simple
     build-commands:
-      - /usr/lib/sdk/openjdk17/install.sh
-
-  - name: certutil
-    buildsystem: simple
-    build-commands:
-      # Copy certutil binary
+      - /usr/lib/sdk/openjdk25/install.sh
       - install -Dm755 /usr/bin/certutil ${FLATPAK_DEST}/bin/certutil
-
   - name: autofirma
     buildsystem: simple
     build-options:
-      # Allow network access during build to get maven dependencies
-      # build-args:
-      #   - --share=network
       env:
-        PATH: ${PATH}:/app/bin:/usr/bin:/usr/lib/sdk/openjdk17/bin
+        PATH: ${PATH}:/app/bin:/usr/bin:/usr/lib/sdk/openjdk25/bin
         MAVEN_OPTS: -Dmaven.test.skip=true -Dmaven.repo.local=.m2/repository
-        JAVA_HOME: /usr/lib/sdk/openjdk17/jvm/openjdk-17
-        DEB_USR: afirma-simple-installer/linux/instalador_deb/src/usr
+        JAVA_HOME: /usr/lib/sdk/openjdk25/jvm/openjdk-25/
     build-commands:
-      # Do not use ranged versions on bouncycastle deps. Fixes offline build
-      - sed -i -E 's|<version>\[([0-9]+\.[0-9]+).*?\)</version>|<version>\1</version>|g' .m2/repository/org/bouncycastle/bc*-jdk18on/*/bc*-jdk18on-*.pom
       # Offline maven build (-o)
-      - mvn clean install -o -B -Denv=install
-
-      # Install main application files
-      - install -d /app/lib
-      - install -c -m 0755 afirma-simple/target/autofirma.jar /app/lib/
-      - install -Dm644 afirma-ui-simple-configurator/target/autofirmaConfigurador.jar /app/lib/autofirmaConfigurador.jar
-
-      # Install the launcher script as the main 'autofirma' command
-      - install -d /app/bin
-      - install -c ${DEB_USR}/bin/autofirma /app/bin/autofirma
-      - install -c -m 0755 afirma-simple-installer/linux/instalador_deb/src/DEBIAN/postinst /app/lib/postinst
-
-
-      # Install icons following the freedesktop standard
-      - install -d /app/share/icons/hicolor/128x128/apps
-      - install -c ${DEB_USR}/lib/AutoFirma/AutoFirma.png /app/share/icons/hicolor/128x128/apps/${FLATPAK_ID}.png
-      # Install SVG icon (scalable)
-      - install -d /app/share/icons/hicolor/scalable/apps
-      - install -c afirma-simple-installer/linux/instalador_deb/src/usr/share/AutoFirma/AutoFirma.svg /app/share/icons/hicolor/scalable/apps/${FLATPAK_ID}.svg
-
-      # Install .desktop file following the freedesktop standard
-      - install -d /app/share/applications
-      - install -c ${DEB_USR}/share/applications/afirma.desktop /app/share/applications/${FLATPAK_ID}.desktop
-
-      # Install licenses and documentation
-      - install -d /app/share/doc/${FLATPAK_ID}
-      - cp -r ${DEB_USR}/share/doc/AutoFirma/* /app/share/doc/${FLATPAK_ID}/
-      - install -d /app/share/licenses/${FLATPAK_ID}
-      - cp -r ${DEB_USR}/share/common-licenses/* /app/share/licenses/${FLATPAK_ID}
-
-      # Install metainfo
-      - install -d /app/share/metainfo
-      - install -c ${DEB_USR}/share/metainfo/${FLATPAK_ID}.metainfo.xml /app/share/metainfo/
+      - mvn clean package -o -B -T 1C -P env-install
+      - install -Dm 0755 afirma-simple/target/autofirma.jar /app/lib/Autofirma/autofirma.jar
+      - install -Dm 0644 afirma-ui-simple-configurator/target/autofirmaConfigurador.jar /app/lib/Autofirma/autofirmaConfigurador.jar
+      # Launch script
+      - install -Dm 0755 afirma-simple-installer/linux/common/bin/autofirma /app/bin/autofirma
+      # SVG icon (scalable)
+      - install -Dm 0644 afirma-simple-installer/linux/common/usr/share/icons/hicolor/scalable/icon.svg /app/share/icons/hicolor/scalable/apps/${FLATPAK_ID}.svg
+      # Desktop file
+      - sed -i -e "s/@APP_ID@/${FLATPAK_ID}/g" afirma-simple-installer/linux/common/usr/share/applications/launcher.desktop.in
+      - install -Dm 0644 afirma-simple-installer/linux/common/usr/share/applications/launcher.desktop.in /app/share/applications/${FLATPAK_ID}.desktop
+      # AppStream
+      - sed -i -e "s/@APP_ID@/${FLATPAK_ID}/g" afirma-simple-installer/linux/common/usr/share/metainfo/metainfo.xml.in
+      - install -Dm 0644 afirma-simple-installer/linux/common/usr/share/metainfo/metainfo.xml.in /app/share/metainfo/${FLATPAK_ID}.metainfo.xml
     sources:
-      # It's possible to use the git repo as a source instead of the .tar
-      # - type: git
-      #   url: https://github.com/ctt-gob-es/clienteafirma.git
-      #   tag: v1.9
-      #   commit: 1f29aa7a2aae8eda40a70fed79b0428153c78df8
-      - type: archive
-        url: https://github.com/ctt-gob-es/clienteafirma/archive/refs/tags/v1.9.tar.gz
-        sha256: 639c14bae0c41955e74714d2eba9727eb8e1828c6ca548686195a6ac9c898f09
+      - type: git
+        url: https://github.com/ctt-gob-es/clienteafirma.git
+        commit: d3d039512d4adb7ac0d67e9e3d1ce6024b2efd88
       - type: patch
-        paths:
-          - patches/adapt-deb-postinst.patch
-          - patches/adapt-launcher.patch
-          - patches/fix-dep-version.patch
-          - patches/fix-desktop-file.patch
-          - patches/fix-svg-icon.patch
-          - patches/improve-metainfo.patch
-      - maven_dependencies.yaml
+        use-git: true
+        paths: 
+          - patches/273847be49ebd42bd6a56fd31ca96f777ee14491.patch
+          - patches/2ca9b989556ce280d06a2640b63d45a655351f41.patch
+          - patches/8f5723b95aac04154f7792054ce40b1f2a82dea7.patch
+          - patches/a58af70d2e784dc4ecfe6ca524240f3c88aab6b8.patch
+          - patches/desktop-file.patch
+          - patches/desktop-icon.patch
+          - patches/launch-script.patch
+          - patches/metainfo.patch
+          - patches/pom.patch
+      - maven-dependencies.yaml

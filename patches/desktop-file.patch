@@ -1,12 +1,14 @@
-diff --git a/afirma-simple-installer/linux/instalador_deb/src/usr/share/applications/afirma.desktop b/afirma-simple-installer/linux/instalador_deb/src/usr/share/applications/afirma.desktop
-index 18a6b3197..37fc5535a 100755
+diff --git a/afirma-simple-installer/linux/instalador_deb/src/usr/share/applications/afirma.desktop b/afirma-simple-installer/linux/common/usr/share/applications/launcher.desktop.in
+index 18a6b3197..fafe2fc4d 100755
 --- a/afirma-simple-installer/linux/instalador_deb/src/usr/share/applications/afirma.desktop
-+++ b/afirma-simple-installer/linux/instalador_deb/src/usr/share/applications/afirma.desktop
-@@ -1,14 +1,12 @@
++++ b/afirma-simple-installer/linux/common/usr/share/applications/launcher.desktop.in
+@@ -1,16 +1,13 @@
  [Desktop Entry]
 -Encoding=UTF-8
 -Version=1.9
- Name=Autofirma
+-Name=Autofirma
++Version=1.5
++Name=AutoFirma
  Type=Application
  Terminal=false
 -Categories=Office;Utilities;Signature;Java
@@ -14,10 +16,11 @@ index 18a6b3197..37fc5535a 100755
 -Icon=/usr/lib/Autofirma/Autofirma.png
 +Categories=Office;Utility;Java
 +Exec=autofirma %u
-+Icon=es.gob.afirma
++Icon=@APP_ID@
  GenericName=Herramienta de firma
 -Comment=Herramienta de firma
-+Comment=Aplicación de firma electrónica del Gobierno de España
  MimeType=x-scheme-handler/afirma;
  StartupNotify=true
  StartupWMClass=autofirma
+ Name[es_ES]=Autofirma
+-

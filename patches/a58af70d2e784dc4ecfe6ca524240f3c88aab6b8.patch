@@ -1,0 +1,27 @@
+From a58af70d2e784dc4ecfe6ca524240f3c88aab6b8 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Vicente=20Maroto=20Garz=C3=B3n?=
+ <vicente.maroto.garzon@c512l.dev>
+Date: Thu, 19 Mar 2026 03:02:48 +0100
+Subject: [PATCH] Add Java 25 to supported versions
+
+---
+ .../src/main/java/es/gob/afirma/standalone/SimpleAfirma.java   | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/afirma-simple/src/main/java/es/gob/afirma/standalone/SimpleAfirma.java b/afirma-simple/src/main/java/es/gob/afirma/standalone/SimpleAfirma.java
+index afb6c1e4c..9492c12a9 100644
+--- a/afirma-simple/src/main/java/es/gob/afirma/standalone/SimpleAfirma.java
++++ b/afirma-simple/src/main/java/es/gob/afirma/standalone/SimpleAfirma.java
+@@ -182,7 +182,8 @@ public final class SimpleAfirma implements PropertyChangeListener, WindowListene
+ 			"10.0", //$NON-NLS-1$
+ 			"11.0", // Version LTS //$NON-NLS-1$
+ 			"17.0", // Version LTS //$NON-NLS-1$
+-			"21" // Version LTS //$NON-NLS-1$
++			"21", // Version LTS //$NON-NLS-1$
++      "25"
+ 	};
+ 
+     /** Modo de depuraci&oacute;n para toda la aplicaci&oacute;n. */
+-- 
+2.53.0
+

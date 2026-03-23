@@ -1,0 +1,26 @@
+From 273847be49ebd42bd6a56fd31ca96f777ee14491 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Vicente=20Maroto=20Garz=C3=B3n?=
+ <vicente.maroto.garzon@c512l.dev>
+Date: Thu, 19 Feb 2026 10:35:09 +0100
+Subject: [PATCH] Fix incorrect java websockets dependency version
+
+---
+ afirma-simple/pom.xml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/afirma-simple/pom.xml b/afirma-simple/pom.xml
+index a6c7cb4fd..ed88112f8 100644
+--- a/afirma-simple/pom.xml
++++ b/afirma-simple/pom.xml
+@@ -227,7 +227,7 @@
+ 		<dependency>
+ 		    <groupId>org.java-websocket</groupId>
+ 			<artifactId>Java-WebSocket</artifactId>
+- 			<version>1.6.1-SNAPSHOT</version>
++ 			<version>1.6.0</version>
+ 		</dependency>
+ 
+ 		<dependency>
+-- 
+2.53.0
+

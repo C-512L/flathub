@@ -1,0 +1,30 @@
+From 2ca9b989556ce280d06a2640b63d45a655351f41 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Vicente=20Maroto=20Garz=C3=B3n?=
+ <vicente.maroto.garzon@c512l.dev>
+Date: Thu, 19 Mar 2026 04:35:04 +0100
+Subject: [PATCH] Do not check for GNOME for dark mode support
+
+---
+ .../java/es/gob/afirma/standalone/LookAndFeelManager.java   | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
+
+diff --git a/afirma-simple/src/main/java/es/gob/afirma/standalone/LookAndFeelManager.java b/afirma-simple/src/main/java/es/gob/afirma/standalone/LookAndFeelManager.java
+index 5bb4ec2da..4adc23299 100644
+--- a/afirma-simple/src/main/java/es/gob/afirma/standalone/LookAndFeelManager.java
++++ b/afirma-simple/src/main/java/es/gob/afirma/standalone/LookAndFeelManager.java
+@@ -221,11 +221,7 @@ public final class LookAndFeelManager {
+ 	 * @return {@code true} si encontramos configurado un tema oscuro de GNOME, {@code false} en caso contrario.
+ 	 */
+ 	private static boolean isGnomeDarkMode() {
+-        return
+-             (queryResultContains("echo $XDG_CURRENT_DESKTOP", "gnome") || //$NON-NLS-1$ //$NON-NLS-2$
+-             queryResultContains("echo $XDG_DATA_DIRS | grep -Eo 'gnome'", "gnome") || //$NON-NLS-1$ //$NON-NLS-2$
+-             queryResultContains("ps -e | grep -E -i \"gnome\"", "gnome")) //$NON-NLS-1$ //$NON-NLS-2$
+-             	&& queryResultContains("gsettings get org.gnome.desktop.interface gtk-theme", "dark") //$NON-NLS-1$ //$NON-NLS-2$
++        return queryResultContains("gsettings get org.gnome.desktop.interface gtk-theme", "dark") //$NON-NLS-1$ //$NON-NLS-2$
+         ;
+     }
+ 
+-- 
+2.53.0
+

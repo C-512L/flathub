@@ -1,0 +1,180 @@
+diff --git a/pom.xml b/pom.xml
+index 20d887b9c..06ca72acf 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -56,10 +56,11 @@
+ 		<afirma.lib.itext.version>1.6</afirma.lib.itext.version>
+ 		<afirma.lib.others.version>0.0.8</afirma.lib.others.version>
+ 		<spongycastle.version>1.58.0.0</spongycastle.version>
++    <bouncycastle.version>1.80</bouncycastle.version>
+ 		<afirma.legible.version>1_8_0</afirma.legible.version>
+ 		<project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
+ 
+-		<jdk.version>1.7</jdk.version>
++		<jdk.version>25</jdk.version>
+ 		
+ 		<junit.version>4.13.2</junit.version>
+ 	</properties>
+@@ -125,7 +126,16 @@
+ 				<artifactId>bcpkix-jdk15on</artifactId>
+ 				<version>${spongycastle.version}</version>
+ 			</dependency>
+-			
++			<dependency>
++        <groupId>org.bouncycastle</groupId>
++        <artifactId>bcutil-jdk18on</artifactId>
++        <version>${bouncycastle.version}</version>
++      </dependency>
++      <dependency>
++        <groupId>org.bouncycastle</groupId>
++        <artifactId>bcprov-jdk18on</artifactId>
++        <version>${bouncycastle.version}</version>
++      </dependency>
+ 			<dependency>
+ 				<groupId>es.uji.crypto.xades</groupId>
+ 				<artifactId>jxades</artifactId>
+@@ -202,9 +212,6 @@
+ 				<module>afirma-ui-core-jse-keystores</module>
+ 				<module>afirma-core-massive</module>
+ 				<module>afirma-ui-simple-configurator-common</module>
+-				<module>afirma-server-triphase-signer-cache</module>
+-				<module>afirma-server-triphase-signer-core</module>
+-				<module>afirma-server-triphase-signer-document</module>
+ 				<module>afirma-simple-plugins</module>
+ 				<module>afirma-simple-plugins-manager</module>
+ 				<module>afirma-simple-plugin-hash</module>
+@@ -248,12 +255,38 @@
+ 				<!-- Aplicaciones -->
+ 				<module>afirma-simple</module>
+ 				<module>afirma-ui-simple-configurator</module>
+-				
+-				<!-- Servicios -->
+-				<module>afirma-server-triphase-signer</module>
+-				<module>afirma-signature-retriever</module>
+-				<module>afirma-signature-storage</module>
+-				
++
++        <!-- Deps -->
++				<module>afirma-core</module>
++				<module>afirma-core-keystores</module>
++				<module>afirma-core-prefs</module>
++				<module>afirma-crypto-batch-client</module>
++				<module>afirma-crypto-cadestri-client</module>
++				<module>afirma-crypto-core-pkcs7</module>
++				<module>afirma-crypto-cades</module>
++				<module>afirma-crypto-cades-multi</module>
++				<module>afirma-crypto-cms</module>
++				<module>afirma-crypto-core-pkcs7-tsp</module>
++				<module>afirma-crypto-core-xml</module>
++				<module>afirma-crypto-odf</module>
++				<module>afirma-crypto-padestri-client</module>
++				<module>afirma-crypto-pdf-common</module>
++				<module>afirma-crypto-pdf</module>
++				<module>afirma-crypto-validation</module>
++				<module>afirma-crypto-xades</module>
++				<module>afirma-crypto-xadestri-client</module>
++				<module>afirma-crypto-xmlsignature</module>
++				<module>afirma-crypto-ooxml</module>
++				<module>afirma-keystores-filters</module>
++				<module>afirma-keystores-mozilla</module>
++				<module>afirma-keystores-jmulticard-ui</module>
++				<module>afirma-ui-utils</module>
++				<module>afirma-ui-core-jse</module>
++				<module>afirma-ui-core-jse-keystores</module>
++				<module>afirma-core-massive</module>
++				<module>afirma-ui-simple-configurator-common</module>
++				<module>afirma-simple-plugins</module>
++				<module>afirma-simple-plugins-manager</module>				
+ 			</modules>
+ 			
+ 			<!-- Las instrucciones de construccion particulares estan dentro de cada modulo.
+@@ -307,9 +340,6 @@
+ 				<module>afirma-ui-core-jse-keystores</module>
+ 				<module>afirma-core-massive</module>
+ 				<module>afirma-ui-simple-configurator-common</module>
+-				<module>afirma-server-triphase-signer-cache</module>
+-				<module>afirma-server-triphase-signer-core</module>
+-				<module>afirma-server-triphase-signer-document</module>
+ 				<module>afirma-simple-plugins</module>
+ 				<module>afirma-simple-plugins-manager</module>
+ 				<module>afirma-simple-plugin-hash</module>
+@@ -318,11 +348,7 @@
+ 				<!-- Aplicaciones -->
+ 				<module>afirma-simple</module>
+ 				<module>afirma-ui-simple-configurator</module>
+-				
+-				<!-- Servicios -->
+-				<module>afirma-server-triphase-signer</module>
+-				<module>afirma-signature-retriever</module>
+-				<module>afirma-signature-storage</module>
++
+ 			</modules>
+ 			
+       		<build>
+@@ -358,7 +384,6 @@
+ 				<module>afirma-core-prefs</module>
+ 				<module>afirma-crypto-batch-client</module>
+ 				<module>afirma-crypto-cadestri-client</module>
+-				<module>afirma-crypto-cipher</module>
+ 				<module>afirma-crypto-core-pkcs7</module>
+ 				<module>afirma-crypto-cades</module>
+ 				<module>afirma-crypto-cades-multi</module>
+@@ -374,7 +399,6 @@
+ 				<module>afirma-crypto-xadestri-client</module>
+ 				<module>afirma-crypto-xmlsignature</module>
+ 				<module>afirma-crypto-ooxml</module>
+-				<module>afirma-crypto-jarverifier</module>
+ 				<module>afirma-keystores-filters</module>
+ 				<module>afirma-keystores-mozilla</module>
+ 				<module>afirma-keystores-jmulticard-ui</module>
+@@ -383,18 +407,10 @@
+ 				<module>afirma-ui-core-jse-keystores</module>
+ 				<module>afirma-core-massive</module>
+ 				<module>afirma-ui-simple-configurator-common</module>
+-				<module>afirma-server-triphase-signer-cache</module>
+-				<module>afirma-server-triphase-signer-core</module>
+-				<module>afirma-server-triphase-signer-document</module>
+ 				<module>afirma-simple-plugins</module>
+ 				<module>afirma-simple-plugins-manager</module>
+ 				<module>afirma-simple-plugin-hash</module>
+ 				<module>afirma-simple-plugin-validatecerts</module>
+-				
+-				<!-- Servicios -->
+-				<module>afirma-server-triphase-signer</module>
+-				<module>afirma-signature-retriever</module>
+-				<module>afirma-signature-storage</module>
+ 			</modules>
+ 			
+ 			<distributionManagement>
+@@ -471,23 +487,15 @@
+ 				<module>afirma-ui-core-jse-keystores</module>
+ 				<module>afirma-core-massive</module>
+ 				<module>afirma-ui-simple-configurator-common</module>
+-				<module>afirma-server-triphase-signer-cache</module>
+-				<module>afirma-server-triphase-signer-core</module>
+-				<module>afirma-server-triphase-signer-document</module>
++
+ 				<module>afirma-simple-plugins</module>
+ 				<module>afirma-simple-plugins-manager</module>
+ 				<module>afirma-simple-plugin-hash</module>
+ 				<module>afirma-simple-plugin-validatecerts</module>
+ 				
+ 				<!-- Aplicaciones -->
+-				<module>afirma-ui-miniapplet</module>
+ 				<module>afirma-simple</module>
+ 				<module>afirma-ui-simple-configurator</module>
+-				
+-				<!-- Servicios -->
+-				<module>afirma-server-triphase-signer</module>
+-				<module>afirma-signature-retriever</module>
+-				<module>afirma-signature-storage</module>
+ 			</modules>
+ 			
+ 			<build>
+@@ -561,4 +569,4 @@
+ 		</profile>
+ 	</profiles>
+ 	
+-</project>
+\ No newline at end of file
++</project>
