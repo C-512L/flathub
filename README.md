@@ -1,8 +1,11 @@
 # Autofirma Flatpak
+
 [Read in English](README.en.md)
+
 ---
 
 ## Acciones necesarias para la mayoria de navegadores
+
 Autofirma requiere instalar un certificado en el navegador que vayas a utilizar. Recomendamos leer el [FAQ oficial] para instalar los certificados manualmente.
 
 Puedes encontrar el archivo del certificado a instalar en la siguiente ubicacion:
@@ -16,10 +19,11 @@ Puedes comprobar tu configuracion en las siguientes paginas:
 - https://www.sededgsfp.gob.es/es/Paginas/TestAutofirma.aspx
 
 ## FAQ
-> Porque necesito instalar manualmente el certificado? 
-> Autofirma no hace esto automatico en Windows?
 
-No realmente, el codigo de auto-instalación de certificados de Autofirma no es robusto.
+> ¿Por qué necesito instalar manualmente el certificado? 
+> ¿Autofirma no hace esto automatico en Windows?
+
+No realmente, el código de auto-instalación de certificados de Autofirma no es robusto.
 Solo es capaz de detectar los dos principales navegadores (Chrome/Chromium y Firefox) incluso en Windows, y solo es capaz de detectarlos en
 las siguientes configuraciones automaticamente sin permisos adicionales:
 - Chrome Nativo (gestor de paquetes)
@@ -29,10 +33,13 @@ Y los siguientes con permisos adicionales:
 - Firefox (gestor de paquetes)
 - Chromium Snap
 
-Tambien, dar permiso a estos ultimos abriría una brecha de ataque grande a tu navegador, por ello no lo habilitamos por defecto ni documentamos como hacerlo aquí.
+También, dar permiso a estos ultimos abriría una brecha de ataque grande a tu navegador, por ello no lo habilitamos por defecto ni documentamos como hacerlo aquí.
 
 ## Contribuir
-Cualquier contribución es bien recibida.
-Para resolver dudas o cuestiones al respecto estamos disponibles en [Matrix][matrix-chat]: #autofirma-flatpak:matrix.org
 
+Cualquier contribución es bien recibida.
+Para resolver dudas o cuestiones al respecto estamos disponibles en [Matrix]: [#autofirma-flatpak:matrix.org][matrix-chat]
+
+[Matrix]: https://matrix.org
+[matrix-chat]: https://matrix.to/#/#autofirma-flatpak:matrix.org
 [FAQ oficial]:https://github.com/ctt-gob-es/clienteafirma/wiki/Faq-autofirma-execution#no-se-abre-autofirma-al-ejecutar-firmas-desde-el-navegador
